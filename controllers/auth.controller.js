@@ -64,6 +64,9 @@ exports.loginUser = (req, res) => {
                         if(comResult){
 
                             let session = nanoid()
+                            result.session = session
+                            result.save()
+
                             res.json({
                                 message: "User logged in successfully !",
                                 session 
@@ -77,4 +80,31 @@ exports.loginUser = (req, res) => {
                 } )
             }
         })
+        .catch((err) => {
+            console.log(err);
+        })
+}
+
+exports.logoutUser = (req, res) => {
+    let { email } = req.body
+
+    User.findOne({email})
+        .then((result) => {
+            if(!result){
+                res.status(400).json({
+                    message: "Bad request !"
+                })
+            }else{
+                result.session = '0'
+                result.save()
+
+                res.json({
+                    message: "User logged out successfully !"
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+
 }

@@ -13,12 +13,12 @@
         elem.addEventListener('click', (e) => {
             axios({
                 method: 'post',
-                url: '/auth/login',
+                url: '/auth/logout',
                 headers: {"Content-Type" : "application/json"},
                 data: {
-                    email: "12@1.com",
+                    email: "1@1.com",
                     // name: "123",
-                    password: "123"
+                    // password: "123"
                 }
             })
             .then((result)=>{
