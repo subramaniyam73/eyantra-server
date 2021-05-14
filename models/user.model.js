@@ -1,4 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+
+// userType = 0 => seeker
+// usertype = 1 => investor
 
 const userSchema = new mongoose.Schema({
     email : {
@@ -16,7 +19,11 @@ const userSchema = new mongoose.Schema({
     session : {
         type: String,
         required: true
+    },
+    userType : {
+        type: Number,
+        required: true
     }
-});
+})
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('user', userSchema)
