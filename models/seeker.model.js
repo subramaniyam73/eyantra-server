@@ -20,23 +20,23 @@ const seekerSchema = new mongoose.Schema({
     },
     f1 : {
         type: String,
-        required: true
+        required: false
     },
     f2 : {
         type: String,
-        required: true
+        required: false
     },
     f3 : {
         type: String,
-        required: true
+        required: false
     },
     f4 : {
         type: String,
-        required: true
+        required: false
     },
     f5 : {
         type: String,
-        required: true
+        required: false
     },
     address : {
         type: String,

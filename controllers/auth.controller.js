@@ -1,9 +1,12 @@
 const User = require('../models/user.model')
+const Investor = require('../models/investor.model')
+const Seeker = require('../models/seeker.model')
 const { nanoid } = require('nanoid')
 const bcrypt = require('bcryptjs')
+const mongoose = require('mongoose')
 
 exports.registerUser = (req, res) => {
-    const {email,name,password} = req.body
+    const {email,name,password,userType,address,license} = req.body
 
     console.log(req.body)
     User.exists({email})
@@ -21,16 +24,37 @@ exports.registerUser = (req, res) => {
                         if(err){
                             console.log(err)
                         }
-            
+                        
+                        // userType = Number(userType)
                         let session = nanoid()
                         let user = new User({
                             name,
                             email,
                             password: hash,
-                            session
+                            session,
+                            userType
                         })
-                    
+
                         user.save()
+
+                        let userID = mongoose.Types.ObjectId(user.id);
+                        if(userType==0){
+                            let newSeeker = new Seeker({
+                                user : userID,
+                                address,
+                                license,
+                                isVerified : false,
+                                stage : 0
+                            })
+                            newSeeker.save()
+                        }else{
+                            let newInvestor = new Investor({
+                                user : userID,
+                                transactions : []
+                            })
+                            newInvestor.save()
+                        }
+                        
                         res.json({
                             message: 'Registered successfully !',
                             session

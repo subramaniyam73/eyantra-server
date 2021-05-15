@@ -11,7 +11,7 @@ const investorSchema = new mongoose.Schema({
     },
     transactions : {
         type: [ObjectId],
-        required: true,
+        required: false,
         // default: false
     },
 })
