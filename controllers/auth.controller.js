@@ -31,7 +31,7 @@ exports.registerUser = (req, res) => {
                             name,
                             email,
                             password: hash,
-                            session,
+                            session : '0',
                             userType
                         })
 
@@ -57,7 +57,6 @@ exports.registerUser = (req, res) => {
                         
                         res.json({
                             message: 'Registered successfully !',
-                            session
                         })
                     });
                 });
@@ -90,11 +89,22 @@ exports.loginUser = (req, res) => {
                             let session = nanoid()
                             result.session = session
                             result.save()
+                            
+                            User.findOne({email})
+                                .select('-password')
+                                .then(userResult => {
 
-                            res.json({
-                                message: "User logged in successfully !",
-                                session 
-                            })
+                                    console.log(userResult);
+                                    res.json({
+                                        message: "User logged in successfully !",
+                                        user : userResult
+                                    })
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    //send server error response !!
+                                })
+                            
                         }else{
                             res.status(401).json({
                                 message: "Invalid credentials !"
