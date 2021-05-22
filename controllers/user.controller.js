@@ -3,6 +3,7 @@ const Seeker = require('../models/seeker.model')
 
 const multer = require('multer')
 const path = require('path')
+const nanoid = require('nanoid')
 
 exports.getUser = (req, res) => {
     const id = req.params.id
@@ -42,7 +43,10 @@ var storage = multer.diskStorage({
         cb(null, "uploads")
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + "-" + Date.now()+".jpg")
+        console.log(file);
+    //   cb(null, file.fieldname + "-" + Date.now()+".jpg")
+        cb(null, Date.now()+file.originalname)
+
     }
 })
 
@@ -52,15 +56,17 @@ var upload = multer({
     fileFilter: function (req, file, cb){
     
         // Set the filetypes, it is optional
-        var filetypes = /jpeg|jpg|png/;
-        var mimetype = filetypes.test(file.mimetype);
+        // var filetypes = /jpeg|jpg|png|pdf|docx/;
+        // var mimetype = filetypes.test(file.mimetype);
   
-        var extname = filetypes.test(path.extname(
-                    file.originalname).toLowerCase());
+        // var extname = filetypes.test(path.extname(
+        //             file.originalname).toLowerCase());
         
-        if (mimetype && extname) {
-            return cb(null, true);
-        }
+        // if (mimetype && extname) {
+        //     return cb(null, true);
+        // }
+
+        return cb(null, true);
       
         cb("Error: File upload only supports the "
                 + "following filetypes - " + filetypes);
