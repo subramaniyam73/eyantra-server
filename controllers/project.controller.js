@@ -28,7 +28,7 @@ exports.fetchProject = (req, res) => {
         .findById(req.params.id)
         .then((result) => {
             Seeker
-                .findById({user : result.seeker})
+                .findOne({user : result.seeker})
                 .then((resultSeeker) => {
                     res.json({
                         message : 'Successful !',
@@ -81,7 +81,8 @@ exports.createProject = (req, res) => {
                     })
                     newProject.save()
                     res.json({
-                        message : 'New project created successfully !'
+                        message : 'New project created successfully !',
+                        id : newProject._id
                     })
                 }else{
                     res.status(400).json({
