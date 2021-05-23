@@ -7,10 +7,20 @@ const mongoose = require('mongoose')
 exports.fetchAll = (req, res) => {
     Project
         .find({ })
-        .then((result) => {
+        .then(async (result) => {
+            
+            for(var i=0 ; i<result.length ; i++){
+                var Seekers = [];
+                await Seeker
+                    .findById(result[i].seeker)
+                    .then((res) => {
+                        Seekers.push(res);
+                    })
+            }
             res.json({
                 message : 'Successful !',
-                data : result
+                projects : result,
+                seekers: Seekers,
             })
         })
         .catch((err) => {
@@ -23,18 +33,29 @@ exports.fetchAll = (req, res) => {
 }
 
 exports.fetchProject = (req, res) => {
-    console.log(req.params.id);
     Project
         .findById(req.params.id)
         .then((result) => {
             Seeker
                 .findOne({user : result.seeker})
                 .then((resultSeeker) => {
-                    res.json({
-                        message : 'Successful !',
-                        project : result,
-                        seeker : resultSeeker
-                    })
+                    console.log(resultSeeker)
+                    User
+                        .findById(resultSeeker.user)
+                        .then((resultUser) => {
+                            res.json({
+                                message : 'Successful !',
+                                project : result,
+                                seeker : resultSeeker,
+                                user: resultUser
+                            })
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            res.status(500).json({
+                                message : 'Something went wrong !'
+                            })
+                        })
                 })
                 .catch((err) => {
                     console.log(err)
