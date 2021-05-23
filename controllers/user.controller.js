@@ -10,7 +10,18 @@ exports.getUser = (req, res) => {
     User
         .findById(id)
         .then((result) => {
-            Seeker
+            if(result.userType==0){
+                Investor
+                .findOne({user : id})
+                .then((resultUser)=>{
+                    res.json({
+                        message : 'successful',
+                        user : result,
+                        investor : resultUser
+                    })
+                })
+            }else{
+                Seeker
                 .findOne({user : id})
                 .then((resultUser) => {
                     console.log(resultUser, result)
@@ -26,6 +37,7 @@ exports.getUser = (req, res) => {
                         message : 'Something went wrong !'
                     })
                 })
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -145,7 +157,7 @@ exports.renderFile = (req, res) => {
     res.sendFile(path.resolve(`uploads/${fileName}`), (err) => {
         if(err) res.send(err)
         else{
-            console.log('sent - ')
+            console.log('sent - '+fileName)
         }
     })
 }

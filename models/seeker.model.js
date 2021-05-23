@@ -44,7 +44,7 @@ const seekerSchema = new mongoose.Schema({
     },
     license : {
         type: String,
-        required: true
+        required: false
     },
     eth : {
         type: String,

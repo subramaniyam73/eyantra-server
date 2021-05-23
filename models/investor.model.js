@@ -9,11 +9,10 @@ const investorSchema = new mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    transactions : {
-        type: [ObjectId],
-        required: false,
-        // default: false
-    },
+    seekersETH : {
+        type: [String],
+        required: false
+    }
 })
 
 module.exports = mongoose.model('investor', investorSchema)
