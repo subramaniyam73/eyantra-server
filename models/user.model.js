@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-// userType = 0 => seeker
-// usertype = 1 => investor
+// userType = 0 => investor
+// usertype = 1 => seeker
 
 const userSchema = new mongoose.Schema({
     email : {

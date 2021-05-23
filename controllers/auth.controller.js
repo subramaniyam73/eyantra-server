@@ -38,7 +38,7 @@ exports.registerUser = (req, res) => {
                         })
 
                         let userID = mongoose.Types.ObjectId(user.id);
-                        if(userType==0){
+                        if(userType==1){
 
                             let newSeeker = new Seeker({
                                 user : userID,
