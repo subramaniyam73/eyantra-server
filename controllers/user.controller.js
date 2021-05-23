@@ -92,6 +92,8 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('file')
 
+exports.upload = upload
+
 exports.uploadTheFile = function(req, res){
      
     upload(req, res, function (err) {

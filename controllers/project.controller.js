@@ -1,6 +1,7 @@
 const User = require('../models/user.model')
 const Seeker = require('../models/seeker.model')
 const Project = require('../models/project.model')
+const userController = require('./user.controller')
 const mongoose = require('mongoose')
 
 exports.fetchAll = (req, res) => {
@@ -84,5 +85,37 @@ exports.createProject = (req, res) => {
                 } 
             }
         })
+}
+
+exports.uploadPhoto = (req, res) => {
+    let project = req.params.project
+
+    userController.upload(req, res, (err)=>{
+
+        if (err) {
+            return res.status(500).json(err)
+        }
+
+
+        Project
+        .findById(project)
+        .then((result)=>{
+            if(result){
+                
+                console.log(result)
+                console.log(req.fileData.name)
+                result.image = req.fileData.name
+                result.save()
+                res.status(200).send('photo uploaded for project')
+            }else{
+                res.status(404).send('project not found')
+            }
+        })
+        .catch((e)=>{
+            console.log(e)
+            res.status(500).send(e)
+        })
+    })
+    
 }
 

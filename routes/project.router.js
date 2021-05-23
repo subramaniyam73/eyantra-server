@@ -6,5 +6,6 @@ router.get('/:id', projectController.fetchProject)
 
 //create project for testing purpose without file handling
 router.post('/create', projectController.createProject)
+router.post('/upload/:project', projectController.uploadPhoto)
 
 module.exports = router
