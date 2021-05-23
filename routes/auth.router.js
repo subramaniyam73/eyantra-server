@@ -5,6 +5,7 @@ const authController = require('../controllers/auth.controller')
 router.post('/register', authController.registerUser)
 router.post('/login', authController.loginUser)
 router.post('/logout', authController.logoutUser)
+router.post('/createLicense', authController.createLicense)
 
 // router.post('/test', (req, res) => {
     

@@ -26,6 +26,10 @@ const projectSchema = new mongoose.Schema({
         type: [ObjectId],
         required: true
     },
+    eth : {
+        type: String,
+        required: true
+    }
 })
 
 module.exports = mongoose.model('project', projectSchema)

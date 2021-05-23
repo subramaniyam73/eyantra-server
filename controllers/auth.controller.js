@@ -1,12 +1,13 @@
 const User = require('../models/user.model')
 const Investor = require('../models/investor.model')
 const Seeker = require('../models/seeker.model')
+const License = require('../models/license.model')
 const { nanoid } = require('nanoid')
 const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 
 exports.registerUser = (req, res) => {
-    const {email,name,password,userType,address,license} = req.body
+    const {email,name,password,userType,address,license,eth} = req.body
 
     console.log(req.body)
     User.exists({email})
@@ -32,32 +33,58 @@ exports.registerUser = (req, res) => {
                             email,
                             password: hash,
                             session : '0',
-                            userType
+                            userType,
+                            eth
                         })
-
-                        user.save()
 
                         let userID = mongoose.Types.ObjectId(user.id);
                         if(userType==0){
-                            let newSeeker = new Seeker({
-                                user : userID,
-                                address,
-                                license,
-                                isVerified : false,
-                                stage : 0
-                            })
-                            newSeeker.save()
+                            License
+                                .exists({license})
+                                .then((doc) => {
+                                    console.log(doc)
+                                    if(doc){
+                                        let newSeeker = new Seeker({
+                                            user : userID,
+                                            address,
+                                            license,
+                                            isVerified : false,
+                                            stage : 0
+                                        })
+                                        newSeeker.save()
+                                        user.save()
+
+                                        res.json({
+                                            message: 'Registered successfully !',
+                                            user,
+                                            newSeeker
+                                        })
+                                    }else{
+                                        res.status(400).json({
+                                            message : 'Invalid license !'
+                                        })
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error)
+                                    res.status(500)
+                                })
+
+                            // 
                         }else{
                             let newInvestor = new Investor({
                                 user : userID,
                                 transactions : []
                             })
                             newInvestor.save()
+                            user.save()
+
+                            res.json({
+                                message: 'Registered successfully !',
+                            })
                         }
                         
-                        res.json({
-                            message: 'Registered successfully !',
-                        })
+                        
                     });
                 });
 
@@ -139,6 +166,33 @@ exports.logoutUser = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
+        })
+
+}
+
+exports.createLicense = (req, res) => {
+    const {license} = req.body
+    License.find({license})
+        .then(result => {
+            if(result.length!=0){
+                res.status(400).json({
+                    message : 'license already exists'
+                })
+            }else{
+                let newLicense = new License({
+                    license
+                })
+                newLicense.save()
+            
+                res.json({
+                    message : 'license added ',
+                    newLicense
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500)
         })
 
 }

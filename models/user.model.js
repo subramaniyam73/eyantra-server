@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     userType : {
         type: Number,
         required: true
+    },
+    eth : {
+        type: String,
+        required: true
     }
 })
 
