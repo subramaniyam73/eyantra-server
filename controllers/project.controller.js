@@ -28,7 +28,7 @@ exports.fetchProject = (req, res) => {
         .findById(req.params.id)
         .then((result) => {
             Seeker
-                .findById(result.seeker)
+                .findById({user : result.seeker})
                 .then((resultSeeker) => {
                     res.json({
                         message : 'Successful !',
@@ -67,7 +67,7 @@ exports.createProject = (req, res) => {
                 })
             }else{
                 console.log(result.stage);
-                if(result[0].stage==6){
+                if(result[0].stage==5){
 
                     //creating object
                     let newProject = new Project({

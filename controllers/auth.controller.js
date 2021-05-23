@@ -39,37 +39,24 @@ exports.registerUser = (req, res) => {
 
                         let userID = mongoose.Types.ObjectId(user.id);
                         if(userType==0){
-                            License
-                                .exists({license})
-                                .then((doc) => {
-                                    console.log(doc)
-                                    if(doc){
-                                        let newSeeker = new Seeker({
-                                            user : userID,
-                                            address,
-                                            license,
-                                            isVerified : false,
-                                            stage : 0,
-                                            eth
-                                        })
-                                        newSeeker.save()
-                                        user.save()
 
-                                        res.json({
-                                            message: 'Registered successfully !',
-                                            user,
-                                            newSeeker
-                                        })
-                                    }else{
-                                        res.status(400).json({
-                                            message : 'Invalid license !'
-                                        })
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                    res.status(500)
-                                })
+                            let newSeeker = new Seeker({
+                                user : userID,
+                                address,
+                                license,
+                                isVerified : false,
+                                stage : 0,
+                                eth
+                            })
+                            newSeeker.save()
+                            user.save()
+
+                            res.json({
+                                message: 'Registered successfully !',
+                                user,
+                                newSeeker
+                            })
+                            
 
                             // 
                         }else{
