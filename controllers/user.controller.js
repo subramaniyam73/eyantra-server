@@ -36,52 +36,81 @@ exports.getUser = (req, res) => {
     
 }
 
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+  
+//         // Uploads is the Upload_folder_name
+//         cb(null, "uploads")
+//     },
+//     filename: function (req, file, cb) {
+//         console.log(file);
+//     //   cb(null, file.fieldname + "-" + Date.now()+".jpg")
+//         cb(null, Date.now()+file.originalname)
+
+//     }
+// })
+
+// var upload = multer({ 
+//     storage: storage,
+//     limits: { },
+//     fileFilter: function (req, file, cb){
+    
+//         // Set the filetypes, it is optional
+//         // var filetypes = /jpeg|jpg|png|pdf|docx/;
+//         // var mimetype = filetypes.test(file.mimetype);
+  
+//         // var extname = filetypes.test(path.extname(
+//         //             file.originalname).toLowerCase());
+        
+//         // if (mimetype && extname) {
+//         //     return cb(null, true);
+//         // }
+
+//         return cb(null, true);
+      
+//         cb("Error: File upload only supports the "
+//                 + "following filetypes - " + filetypes);
+//       } 
+  
+// // mypic is the name of file attribute
+// }).single("file");   
+
+
+
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-  
-        // Uploads is the Upload_folder_name
-        cb(null, "uploads")
-    },
-    filename: function (req, file, cb) {
-        console.log(file);
-    //   cb(null, file.fieldname + "-" + Date.now()+".jpg")
-        cb(null, Date.now()+file.originalname)
-
-    }
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' +file.originalname )
+  }
 })
 
-var upload = multer({ 
-    storage: storage,
-    limits: { },
-    fileFilter: function (req, file, cb){
+var upload = multer({ storage: storage }).single('file')
+
+exports.uploadTheFile = function(req, res){
+     
+        upload(req, res, function (err) {
+               if (err instanceof multer.MulterError) {
+                   return res.status(500).json(err)
+               } else if (err) {
+                   return res.status(500).json(err)
+               }
+          return res.status(200).send(req.file)
     
-        // Set the filetypes, it is optional
-        // var filetypes = /jpeg|jpg|png|pdf|docx/;
-        // var mimetype = filetypes.test(file.mimetype);
-  
-        // var extname = filetypes.test(path.extname(
-        //             file.originalname).toLowerCase());
-        
-        // if (mimetype && extname) {
-        //     return cb(null, true);
-        // }
-
-        return cb(null, true);
-      
-        cb("Error: File upload only supports the "
-                + "following filetypes - " + filetypes);
-      } 
-  
-// mypic is the name of file attribute
-}).single("mypic");   
-
-
+        })
+    
+}
 
 exports.uploadFile = (req, res) => {
     upload(req, res, (err) => {
         if(err) res.send(err)
 
-        else res.send('success')
+        else{
+            console.log(req.params.user);
+            res.send('success')
+        }
     })
 }
 
