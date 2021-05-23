@@ -54,32 +54,37 @@ exports.fetchProject = (req, res) => {
 }
 
 exports.createProject = (req, res) => {
-    let {seeker,deposit,eth} = req.body
+
+    //seeker is user id
+    let {seeker, deposit, address, name, description, totalRequiredTokens} = req.body
     seeker = mongoose.Types.ObjectId(seeker)
     Seeker
         .find({user:seeker})
         .then((result) => {
             if(result.length==0){
-                res.json({
+                res.status(404).json({
                     message : 'seeker does not exist'
                 })
             }else{
                 console.log(result.stage);
                 if(result[0].stage==6){
+
+                    //creating object
                     let newProject = new Project({
                         seeker,
                         deposit,
-                        amount_received : 0,
-                        investor_count : 0,
-                        transactions : [],
-                        eth
+                        address,
+                        name,
+                        description,
+                        totalRequiredTokens,
+                        eth : result[0].eth,
                     })
                     newProject.save()
                     res.json({
                         message : 'New project created successfully !'
                     })
                 }else{
-                    res.json({
+                    res.status(400).json({
                         message : 'complete verification to create project'
                     })
                 } 

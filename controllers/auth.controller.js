@@ -49,7 +49,8 @@ exports.registerUser = (req, res) => {
                                             address,
                                             license,
                                             isVerified : false,
-                                            stage : 0
+                                            stage : 0,
+                                            eth
                                         })
                                         newSeeker.save()
                                         user.save()

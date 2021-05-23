@@ -16,18 +16,47 @@ const projectSchema = new mongoose.Schema({
     },
     amount_received : {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     investor_count : {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     transactions : {
         type: [ObjectId],
-        required: true
+        required: true,
+        default: []
     },
     eth : {
         type: String,
+        required: true
+    },
+    address : {
+        type: String,
+        required: true
+    },
+    name : {
+        type: String,
+        required: true
+    },
+    description : {
+        type: String,
+        required: true
+    },
+    image : {
+        type: String,
+        required: true,
+        default: '0'
+    },
+    sanctionedDate : {
+        type: Date,
+        required: true,
+        default: '0'
+    },
+    totalRequiredTokens : {
+        type: Number,
         required: true
     }
 })
