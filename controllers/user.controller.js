@@ -83,7 +83,10 @@ var storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' +file.originalname )
+    req.fileData = {}
+    req.fileData.name = Date.now() + '-' +file.originalname
+    console.log(req.fileData.name);
+    cb(null, req.fileData.name )
   }
 })
 
@@ -91,28 +94,48 @@ var upload = multer({ storage: storage }).single('file')
 
 exports.uploadTheFile = function(req, res){
      
-        upload(req, res, function (err) {
-               if (err instanceof multer.MulterError) {
-                   return res.status(500).json(err)
-               } else if (err) {
-                   return res.status(500).json(err)
-               }
-          return res.status(200).send(req.file)
-    
-        })
-    
-}
-
-exports.uploadFile = (req, res) => {
-    upload(req, res, (err) => {
-        if(err) res.send(err)
-
-        else{
-            console.log(req.params.user);
-            res.send('success')
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
         }
+        
+        let user = req.params.user
+        Seeker
+            .findOne({user})
+            .then((resultUser) => {
+                resultUser.stage = resultUser.stage + 1
+                let stage = resultUser.stage
+                let filePeru = `f${stage}`
+                resultUser[filePeru] = req.fileData.name
+                resultUser.save()
+
+                res.json({
+                    message : 'success'
+                })
+
+                // return res.status(200).send(req.file)
+            })
+            .catch((error) => {
+                console.log(error);
+                res.send(error)
+            })
+
     })
+    
 }
+
+// exports.uploadFile = (req, res) => {
+//     upload(req, res, (err) => {
+//         if(err) res.send(err)
+
+//         else{
+//             console.log(req.params.user);
+//             res.send('success')
+//         }
+//     })
+// }
 
 exports.renderFile = (req, res) => {
     var fileName = req.params.fileName
