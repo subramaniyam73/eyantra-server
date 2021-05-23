@@ -80,6 +80,12 @@ exports.createProject = (req, res) => {
                         eth : result[0].eth,
                     })
                     newProject.save()
+
+                    //update seeker project field
+                    result[0].project = newProject._id
+                    result[0].save()
+
+
                     res.json({
                         message : 'New project created successfully !',
                         id : newProject._id

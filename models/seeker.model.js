@@ -49,6 +49,11 @@ const seekerSchema = new mongoose.Schema({
     eth : {
         type: String,
         required: true
+    },
+    project : {
+        type: String,
+        required: true,
+        default: '0'
     }
 })
 
