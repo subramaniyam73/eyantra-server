@@ -152,3 +152,27 @@ exports.uploadPhoto = (req, res) => {
     
 }
 
+exports.completeSanction = (req, res) => {
+    const {project} = req.body
+    Project
+        .findById(project)
+        .then((result)=>{
+            if(result){
+                result.sanctionedDate = Date.now()
+                result.save()
+                console.log(result.sanctionedDate)
+                // console.log(typeOf(result.sanctionedDate))
+
+                res.status(200).json({
+                    project:result
+                })
+            }else{
+                res.status(404)
+            }
+        })
+        .catch((err)=>{
+            res.status(500).send(err)
+        })
+    
+}
+

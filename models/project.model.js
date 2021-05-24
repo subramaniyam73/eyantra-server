@@ -51,9 +51,8 @@ const projectSchema = new mongoose.Schema({
         default: '0'
     },
     sanctionedDate : {
-        type: Date,
-        required: true,
-        default: '0'
+        type: Number,
+        required: false
     },
     totalRequiredTokens : {
         type: Number,
