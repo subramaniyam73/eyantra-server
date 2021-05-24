@@ -1,16 +1,27 @@
 const Investor = require('../models/investor.model')
+const Project = require('../models/project.model')
+
 
 exports.fetchDetails = (req, res) => {
     let investor = req.params.investor
     Investor
         .findOne({user:investor})
-        .then((resultUser)=>{
+        .then(async(resultUser)=>{
 
             if(resultUser){
                 console.log(resultUser)
+                var uniqueProjectIds = [...new Set(resultUser.projectIds)];
+                var projects  = [];
+                for(var i=0 ; i<uniqueProjectIds.length;i++){
+                    await Project
+                        .findById(uniqueProjectIds[i])
+                        .then((res)=>{
+                            projects.push(res);
+                        })
+                }
                 res.json({
                     message : 'fetch successful !',
-                    investor : resultUser
+                    investor : projects
                 })  
   
             }else{
@@ -35,11 +46,16 @@ exports.addTransaction = (req, res) => {
         .findOne({user:investor})
         .then((resultUser)=>{
             if(resultUser){
-                resultUser.seekersETH.push(eth)
-                resultUser.save()
-                res.json({
-                    message : 'updated transaction !'
-                })
+                Project
+                    .findOne({eth: eth})
+                    .then((res)=>{
+                        resultUser.projectIds.push(res._id);
+                        resultUser.save()
+                        res.json({
+                            message : 'updated transaction !'
+                        })
+                    })
+                
             }else{
                 res.status(404).json({
                     message : 'investor not found !'

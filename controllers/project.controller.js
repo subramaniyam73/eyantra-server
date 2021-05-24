@@ -129,7 +129,7 @@ exports.uploadPhoto = (req, res) => {
             return res.status(500).json(err)
         }
 
-
+        console.log(project);
         Project
         .findById(project)
         .then((result)=>{

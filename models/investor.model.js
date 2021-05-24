@@ -9,7 +9,7 @@ const investorSchema = new mongoose.Schema({
         type: ObjectId,
         required: true
     },
-    seekersETH : {
+    projectIds : {
         type: [String],
         required: false
     }
