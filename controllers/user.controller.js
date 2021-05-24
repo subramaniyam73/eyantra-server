@@ -1,5 +1,6 @@
 const User = require('../models/user.model')
 const Seeker = require('../models/seeker.model')
+const Investor = require('../models/investor.model')
 
 const multer = require('multer')
 const path = require('path')
