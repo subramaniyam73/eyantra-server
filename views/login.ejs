@@ -7,19 +7,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 </head>
 <body>
-    <button>Submit</button>
+
+    <form action="/user/seeker/upload" 
+      enctype="multipart/form-data" method="POST">
+      
+        <span>Upload Profile Picture:</span>  
+        <input type="file" name="mypic" id="file" required/> <br>
+        <input type="submit" value="submit"> 
+        <button>teestingg</button>
+    </form>
+
+    <script src="">
+        var formData = new FormData();
+        var imagefile = document.querySelector('#file');
+        formData.append("image", imagefile.files[0]);
+        document.querySelector('button').addEventListener('click', (e) => {
+            axios.post('/user/seeker/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        })
+    </script>
+    <!-- <button>Submit</button>
     <script>
         let elem = document.querySelector('button')
         elem.addEventListener('click', (e) => {
+            // axios({
+            //     method: 'post',
+            //     url: '/auth/logout',
+            //     headers: {"Content-Type" : "application/json"},
+            //     data: {
+            //         email: "1@1.com",
+            //         // name: "123",
+            //         // password: "123"
+            //     }
+            // })
+            // .then((result)=>{
+            //     console.log(result);
+            // })
+            // .catch((err)=>{
+            //     console.log(err);
+            // })
+
             axios({
-                method: 'post',
-                url: '/auth/login',
-                headers: {"Content-Type" : "application/json"},
-                data: {
-                    email: "12@1.com",
-                    // name: "123",
-                    password: "123"
-                }
+                method: 'get',
+                url: '/project/60a41bc0cee846439533130b',
+                // headers: {"Content-Type" : "application/json"},
+                // data: {
+                //     email: "1@1.com",
+                //     // name: "123",
+                //     // password: "123"
+                // }
             })
             .then((result)=>{
                 console.log(result);
@@ -27,7 +66,26 @@
             .catch((err)=>{
                 console.log(err);
             })
+
+            // axios({
+            //     method: 'post',
+            //     url: '/project/create',
+            //     headers: {"Content-Type" : "application/json"},
+            //     data: {
+            //         seeker: "60a12b60f62e4d8234425542",
+            //         deposit: 100
+            //         // name: "123",
+            //         // password: "123"
+            //     }
+            // })
+            // .then((result)=>{
+            //     console.log(result);
+            // })
+            // .catch((err)=>{
+            //     console.log(err);
+            // })
+
         })
-    </script>
+    </script> -->
 </body>
 </html>
